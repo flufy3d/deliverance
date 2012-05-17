@@ -7,6 +7,7 @@ deliverance a game made by html5,just a small test project for myself
 Twisted 12.0.0 for Python 2.7 windows
 zope.interface 4.0.0 for python 2.7
 setuptools-0.6c11.win32-py2.7.exe 
+pywin32-217.win32-py2.7 for enable Twisted's iocp
 
 ### Client ###
 use Three.js
