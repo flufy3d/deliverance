@@ -98,10 +98,10 @@
 		
 
 		<script>
-		  var socket = io.connect('http://localhost',{port: 80});
+		  var socket = io.connect('http://deliverance.jit.su',{port: 80});
 		  socket.on('news', function (data) {
 		    console.log(data);
-		    socket.emit('login event', { id: 'data' ,pwd : '124'});
+		    socket.emit('login event', { id: 'data' ,pwd : '1234'});
 		  });
 		  socket.on('login result',function (data){
 		  	console.log(data);
