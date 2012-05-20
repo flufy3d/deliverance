@@ -1,6 +1,11 @@
-var http = require('http');
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
-}).listen(1337, "127.0.0.1");
-console.log('Server running at http://127.0.0.1:1337/');
+var io = require('socket.io').listen(80);
+
+io.sockets.on('connection', function (socket) {
+	console.log('connected');
+  socket.emit('news', { hello: 'world' });
+  socket.on('login event', function (data) {
+    console.log(data);
+    if (data.id == 'data' && data.pwd == '1234')
+    	socket.emit('login result',{result:'OK'});
+  });
+});

@@ -94,9 +94,26 @@
         <script src="./src/Stats.js"></script>
         <script src="./src/main.js"></script>
 
+		<script src="socket.io.js"></script>
+		
+
+		<script>
+		  var socket = io.connect('http://localhost',{port: 80});
+		  socket.on('news', function (data) {
+		    console.log(data);
+		    socket.emit('login event', { id: 'data' ,pwd : '124'});
+		  });
+		  socket.on('login result',function (data){
+		  	console.log(data);
+		  	if (data.result == 'OK' ) alert('login success!');
+		  });
+		</script>
+				
+		
         <script>
-                init();
-                animate();
+        
+                //init();
+                //animate();
         </script>
 
     
