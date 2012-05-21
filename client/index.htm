@@ -98,8 +98,9 @@
 		
 
 		<script>
-		  var socket = io.connect('http://deliverance.jit.su',{port: 80});
+		  var socket = io.connect('http://58.215.185.242',{port: 8001});
 		  socket.on('news', function (data) {
+		  	alert('connect success!');
 		    console.log(data);
 		    socket.emit('login event', { id: 'data' ,pwd : '1234'});
 		  });
