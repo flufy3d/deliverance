@@ -1,9 +1,16 @@
 {
-    "name": "deliverance"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.5.8"
-    , "jade": ">= 0.0.1"
-  }
+  "name": "client",
+  "version": "0.0.1-1",
+  "private": true,
+  "dependencies": {
+    "express": "2.5.8",
+    "jade": ">= 0.0.1"
+  },
+  "scripts": {
+    "start": "app.js"
+  },
+  "engines": {
+    "node": "0.6.x"
+  },
+  "subdomain": "del"
 }

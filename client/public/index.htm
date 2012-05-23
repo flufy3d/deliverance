@@ -94,11 +94,11 @@
         <script src="./src/Stats.js"></script>
         <script src="./src/main.js"></script>
 
-		<script src="socket.io.js"></script>
+		<script src="http://server.jit.su/socket.io/socket.io.js"></script>
 		
 
 		<script>
-		  var socket = io.connect('http://58.215.185.242',{port: 8001});
+		  var socket = io.connect('http://server.jit.su',{port: 80});
 		  socket.on('news', function (data) {
 		  	alert('connect success!');
 		    console.log(data);

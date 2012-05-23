@@ -1,13 +1,13 @@
 {
-  "name": "deliverance",
-  "subdomain": "deliverance",
+  "name": "server",
+  "subdomain": "server",
   "dependencies": {
     "socket.io": ">0"
   },
   "scripts": {
     "start": "main.js"
   },
-  "version": "0.0.0-10",
+  "version": "0.1.0-11",
   "engines": {
     "node": "0.6.x"
   }
