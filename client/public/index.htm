@@ -1,122 +1,257 @@
-<!DOCTYPE html>
-<!-- saved from url=(0055)http://alteredqualia.com/three/examples/webgl_road.html -->
-<!-- upload from company -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>three.js webgl - road</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <style type="text/css">
-            body {
-                background:#000;
-                color: #999;
-                padding:0;
-                margin:0;
-                font-weight: bold;
-                overflow:hidden;
-            }
-            #info {
-                position: absolute;
-                top: 10px; width: 99%;
-                color: #ffffff;
-                padding: 5px;
-                font-family: Monospace;
-                font-size: 13px;
-                text-align: center;
-                z-index:150;
-            }
+<html><head> 
+ 
+ 
+<title>GLGE</title> 
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+ 
+ 
+<link type="text/css" href="dependencies/jquery-ui-1.8.12.custom.css" rel="stylesheet" />	
+<script type="text/javascript" src="dependencies/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="dependencies/jquery-ui-1.8.12.custom.min.js"></script>
 
-            a {
-                color: orange;
-                text-decoration: none;
-            }
 
-            a:hover {
-                color: #0080ff;
-            }
+<script type="text/javascript" src="dependencies/glge-compiled.js"></script>
 
-            #footer { width: 100%; margin: 2em auto; text-align: center; position: absolute; bottom: 0 }
-            .h { color: skyblue }
-            .c { display: inline; margin-left: 1em }
+<style>
+/* page */
+body{margin:auto; background-color: #888; padding-top: 50px; font-family:sans; color: #666; font-size: 0.8em}
+#container{ margin: 0 auto; width: 900px; padding: 10px; background-color: #fff; border-radius: 5px; -webkit-box-shadow: 5px 5px 2px #444; }
 
-        </style>
-    </head>
+/* preloader */
+.glge-gui-gadget-preloader {
+	/* color */
+	background-color: #6699FF;
 
-    <body>
-        <div id="info">
-            <a href="http://github.com/mrdoob/three.js" target="_blank">three.js</a> - road -
-            Veyron by <a href="http://artist-3d.com/free_3d_models/dnm/model_disp.php?uid=1129" target="_blank">Troyano</a> -
-            Supermale by <a href="http://planetquake.gamespy.com/View.php?view=Quake2.Detail&id=83">Paolo Piselli</a> -
-            Faerie by <a href="http://planetquake.gamespy.com/View.php?view=Quake2.Detail&id=212">Brian Collins</a> -
-            Boba Fett by <a href="http://planetquake.gamespy.com/View.php?view=Quake2.Detail&id=137">Dan Bickell</a> -
-            Ogro by <a href="http://planetquake.gamespy.com/View.php?view=Quake2.Detail&id=556">Magarnigal</a> -
-            trees by <a href="http://mirada.com/">Mirada</a>, ruins by <a href="http://zoinkgames.com/">Zoink</a> (<a href="http://ro.me/">ro.me)</a> -
-            misc objects by <a href="http://www.md2.sitters-electronics.nl/models.html">w. sitters</a>
-        </div>
+	/* size */
+	width: 400px;
+	height: 210px;
+	padding: 7px;
+	margin: 0px;
 
-        <div id="container"><canvas width="1364" height="397" style="position: absolute; top: 100px; left: 0px; "></canvas><div style="cursor: pointer; width: 80px; opacity: 0.9; position: absolute; top: 0px; left: 0px; z-index: 100; "><div style="padding-top: 2px; padding-right: 0px; padding-bottom: 3px; padding-left: 0px; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; background-position: initial initial; background-repeat: initial initial; "><div style="font-family: Helvetica, Arial, sans-serif; text-align: left; font-size: 9px; margin-top: 0px; margin-right: 0px; margin-bottom: 1px; margin-left: 3px; color: rgb(170, 170, 170); "><span style="font-weight:bold">14 FPS</span> (0-16)</div><canvas width="74" height="30" style="margin-left: 3px; display: none; "></canvas></div><div style="background-color: rgb(8, 24, 8); padding-top: 2px; padding-right: 0px; padding-bottom: 3px; padding-left: 0px; display: none; "><div style="font-family: Helvetica, Arial, sans-serif; text-align: left; font-size: 9px; color: rgb(0, 255, 0); margin-top: 0px; margin-right: 0px; margin-bottom: 1px; margin-left: 3px; "><span style="font-weight:bold">54 MS</span> (20-2811)</div><canvas width="74" height="30" style="display: block; margin-left: 3px; "></canvas></div><div style="background-color: rgb(24, 8, 13); padding-top: 2px; padding-right: 0px; padding-bottom: 3px; padding-left: 0px; display: none; "><div style="font-family: Helvetica, Arial, sans-serif; text-align: left; font-size: 9px; color: rgb(255, 0, 128); margin-top: 0px; margin-right: 0px; margin-bottom: 1px; margin-left: 3px; "><span style="font-weight:bold">MEM</span></div><canvas width="74" height="30" style="display: block; margin-left: 3px; "></canvas></div></div></div>
+	/* round corners */
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	
+	/* shadow */
+	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+/* preloader - progressbar */
+.glge-gui-gadget-preloader .glge-gui-progressbar {
+	/* size */
+	width: 84%;
+	margin: 8px auto 3px auto;
+	padding: 0px;
+}
+.ui-progressbar-value { background-image: url(dependencies/pbar-ani.gif); }
+.ui-widget-content { background-image: none; }
+</style>
 
-        <div id="footer">
-            camera: <span class="h">drag mouse + hold mouse buttons</span>
+</head>
+<body>
 
-            <div class="c">object: <span class="h">WASD</span> / <span class="h">arrows</span>
-            </div>
+<div id="container">
+	<canvas id="canvas" width="900" height="400"></canvas>
+	<div id="details">
+		<h2>GLGE Platform Game</h2>
+		<p>A very basic platform game, controls:<br />Cursor keys to move and spacebar to jump</p>
+	</div>
+</div>
+<div id="debug"></div>
 
-            <div class="c">car: <span class="h">1</span>
-            </div>
+<script type="text/javascript">
+var gameScene;
+var doc = new GLGE.Document();
+doc.onLoad=function(){
+	//create the renderer
+	var gameRenderer=new GLGE.Renderer(document.getElementById('canvas'));
+	gameScene=new GLGE.Scene();
+	gameScene=doc.getElement("scene");
+	gameRenderer.setScene(gameScene);
 
-            <div class="c">characters: <span class="h">2</span> / <span class="h">3</span> / <span class="h">4</span> / <span class="h">5</span>
-            </div>
+	var mouse=new GLGE.MouseInput(document.getElementById('canvas'));
+	var keys=new GLGE.KeyInput();
 
-            <div class="c">skins: <span class="h">o</span> / <span class="h">p</span>
-            </div>
+	doc.getElement("OBCircle").pickable=false;
 
-            <div class="c">
-            day / night: <span class="h">n</span>
-            </div>
+	var manstate="stand";
+	var manvel=[0,0,0];
+	var manpos=[0,0,45];
+	var manrot=0;
+	var manrotvel=0;
+	var armatue=doc.getElement("AMArmature");
+	var manwalk=doc.getElement("ACArmature_walk");
+	var manjump=doc.getElement("ACArmature_Jump");
+	var manwalkback=doc.getElement("ACArmature_walkback");
+	var manstand=doc.getElement("ACArmature_stand");
+	var manland=doc.getElement("ACArmature_Land");
+	var manfly=doc.getElement("ACArmature_Fly");
+	var mantime=0;
 
-            <div class="c">
-            tilt-shift: <span class="h">t</span>
-            </div>
-
-            <div class="c">
-            slow-motion: <span class="h">m</span>
-            </div>
-        </div>
-
-        <script src="./src/ThreeRoad.js"></script>
-
-        <script src="./src/ShaderExtrasRoad.js"></script>
-        <script src="./src/PostprocessingRoad.js"></script>
-        <script src="./src/CarRoad.js"></script>
-        <script src="./src/MD2CharacterComplex.js"></script>
-
-        <script src="./src/Detector.js"></script>
-        <script src="./src/Stats.js"></script>
-        <script src="./src/main.js"></script>
-
-		<script src="http://server.jit.su/socket.io/socket.io.js"></script>
+	function manlogic(){
+		var matrix=armatue.getModelMatrix();
+		incx=matrix[0];
+		incy=matrix[4];
+		var time=(new Date()).getTime();
+		var dt=(time-mantime)/1000;
 		
-
-		<script>
-		  var socket = io.connect('http://server.jit.su',{port: 80});
-		  socket.on('news', function (data) {
-		  	alert('connect success!');
-		    console.log(data);
-		    socket.emit('login event', { id: 'data' ,pwd : '1234'});
-		  });
-		  socket.on('login result',function (data){
-		  	console.log(data);
-		  	if (data.result == 'OK' ) alert('login success!');
-		  });
-		</script>
+		var camera=gameScene.camera;
+		var position=camera.getPosition();
+		
+		if(dt<1){
+			target=[manpos[0]-incx*40,manpos[1]-incy*40,manpos[2]+20];
+			camera.setLocX(position.x+(target[0]-position.x)*dt);
+			camera.setLocY(position.y+(target[1]-position.y)*dt);
+			camera.setLocZ(position.z+(target[2]-position.z)*dt);
+			camera.Lookat([manpos[0],manpos[1],manpos[2]+7]);
+		}
 				
+		if(keys.isKeyPressed(GLGE.KI_SPACE)){
+			if(manstate!="jump" && manstate!="land"){
+				manstate="jump";
+				armatue.setAction(manjump,150);
+				manvel=[15*incx,15*incy,50];
+			}
+		}
 		
-        <script>
-        
-                init();
-                animate();
-        </script>
+		if(keys.isKeyPressed(GLGE.KI_UP_ARROW) && manstate!="jump" && manstate!="land"){
+			if(manstate!="walk"){
+				manstate="walk";
+				armatue.setAction(manwalk,150,true);
+				manvel=[25*incx,25*incy,0];
+			}
+		}else if(keys.isKeyPressed(GLGE.KI_UP_ARROW) && (manstate=="jump" || manstate=="land")){
+			manvel[0]=manvel[0]+20*incx*dt;
+			manvel[1]=manvel[1]+20*incy*dt;
+		}else if(manstate=="walk"){
+			manstate="stand";
+			armatue.setAction(manstand,150,true);
+			manvel=[0,0,0];
+		}
+		if(keys.isKeyPressed(GLGE.KI_DOWN_ARROW) && manstate!="jump"){
+			if(manstate!="walkback"){
+				manstate="walkback";
+				armatue.setAction(manwalkback,150,true);
+				manvel=[-15*incx,-15*incy,0];
+			}
+		}else if(manstate=="walkback"){
+			manstate="stand";
+			armatue.setAction(manstand,150,true);
+			manvel=[0,0,0];
+		}
+		
+		if(keys.isKeyPressed(GLGE.KI_LEFT_ARROW) && manstate!="jump"){
+			if(manstate!="walk" && manrotvel==0){
+				manstate="turn";
+				manvel=[0,0,0];
+				armatue.setAction(manwalk,150,true);
+			}else if(manstate=="walk"){
+				manvel=[10*incx,10*incy,0];
+			}
+			if(manstate!="walkback"){
+				manrotvel=3;
+			}
+		}else if(keys.isKeyPressed(GLGE.KI_RIGHT_ARROW) && manstate!="jump"){
+			if(manstate!="walk" && manrotvel==0){
+				manstate="turn";
+				manvel=[0,0,0];
+				armatue.setAction(manwalk,150,true);
+			}else if(manstate=="walk"){
+				manvel=[10*incx,10*incy,0];
+			}
+			if(manstate!="walkback"){
+				manrotvel=-3;
+			}
+		}else{
+			if(manstate=="turn"){
+				armatue.setAction(manstand,150,true);
+				manvel=[0,0,0];
+			}
+			manrotvel=0;
+		}
+		
+		if(manvel[0]>0 || manvel[1]>0){
+			var dirtotal=Math.sqrt(manvel[0]*manvel[0]+manvel[1]*manvel[1]);
+			var dirx=manvel[0]/dirtotal;
+			var diry=manvel[1]/dirtotal;
+			xdist=gameScene.ray([manpos[0],manpos[1],manpos[2]-6],[-dirx,-diry,0]);
+			xdist=((xdist.distance*100)|0)/100;
+			if(xdist<3 && xdist>0){
+				manvel[0]=0;
+				manvel[1]=0;
+			}
+		}
+		
+		if(mantime>0){
+			mantime=time;
+			manpos[0]=manpos[0]+manvel[0]*dt;
+			manpos[1]=manpos[1]+manvel[1]*dt;
+			manpos[2]=manpos[2]+manvel[2]*dt;
+			manrot=manrot+manrotvel*dt;
+			armatue.setLocX(manpos[0]);
+			armatue.setLocY(manpos[1]);
+			armatue.setLocZ(manpos[2]);
+			armatue.setRotZ(manrot);
+			zdist=gameScene.ray([manpos[0],manpos[1],manpos[2]],[0,0,1]);
+            if(zdist != null){
+			zdist=((zdist.distance*100)|0)/100;
+			if(zdist>7.81){
+				manvel[2]=manvel[2]-70*dt;
+			}else if(zdist<7.81){
+				manpos[2]=manpos[2]+(7.81-zdist);
+				manstate="land";
+				armatue.setAction(manland,150);
+				manvel=[15*incx,15*incy,0];
+			}
+            }
+            else{
+            	manpos[2]=manpos[2]+(7.81-zdist);
+				manstate="land";
+				armatue.setAction(manland,150);
+				manvel=[15*incx,15*incy,0];
+            }
+		}else{
+			mantime=(new Date()).getTime();
+		}
+	}
 
-    
+	var jumplistener=function(data){
+		armatue.setAction(manfly,200,true);
+	};
+	var landlistener=function(data){
+		if(manstate!="stand"){
+			armatue.setAction(manstand,200,true);
+			manstate="stand";
+			manvel=[0,0,0];
+		}
+	}
+
+	manland.addEventListener("animFinished",landlistener);	
+	manjump.addEventListener("animFinished",jumplistener);
+
+	function render(){
+		manlogic();
+		gameRenderer.render();
+		requestAnimationFrame(render);
+	}
+	render();
+}
+// Preloader configurations are optional. They improve the accuracy of the preloader.
+var preloaderConfiguration1 = {XMLQuota: 0.13, numXMLFiles: 1}; // Example 1 (active)
+var preloaderConfiguration2 = {XMLQuota: 0.30, XMLBytes: 852605}; // Example 2 
+
+doc.load("plat.xml", preloaderConfiguration1);
+// alternative: doc.load("plat.xml", preloaderConfiguration2);
+// alternative: doc.load("plat.xml", true);
+// alternative: doc.load("plat.xml"); // In this case you may not use the preloader gui because preloading is disabled.
+
+GLGE.GUI.useLibrary("jQuery"); // use the jQuery progress-bar
+
+var preloaderGUI = new GLGE.GUI.Preloader(); // use the preloader gui-gadget to display the progress
+preloaderGUI.setDocumentLoader(doc.preloader);
+preloaderGUI.addToDOM(document.getElementById('container'));
+</script>
 
 </body></html>
