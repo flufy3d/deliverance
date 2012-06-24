@@ -11,15 +11,17 @@
 
 
 <script type="text/javascript" src="dependencies/glge-compiled.js"></script>
-
+<script type="text/javascript" src="http://localhost:8000/socket.io/socket.io.js"></script>
 <style>
 /* page */
-body{margin:auto; background-color: #888; padding-top: 50px; font-family:sans; color: #666; font-size: 0.8em}
+body{margin:auto; background-color: #888; padding-top: 50px; font-family:sans; color: #666; font-size: 62.5%;}
 label, input { display:block; }
 input.text { margin-bottom:12px; width:95%; padding: .4em; }
 fieldset { padding:0; border:0; margin-top:5px; }
-
 h1 { font-size: 1.2em; margin: .6em 0; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }
+.ui-dialog .ui-state-error { padding: .3em; }
+
 #container{ margin: 0 auto; width: 900px; padding: 10px; background-color: #eee; border-radius: 5px; -webkit-box-shadow: 5px 5px 2px #444; }
 
 /* preloader */
@@ -61,24 +63,24 @@ h1 { font-size: 1.2em; margin: .6em 0; }
 	<canvas id="canvas" width="900" height="400"></canvas>
     
     <div id="dialog-form" title="Create new user">
-	<p class="validateTips">All form fields are required.</p>
-
-	<form>
-	<fieldset>
-		<label for="name">Name</label>
-		<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
-		<label for="email">Email</label>
-		<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" />
-		<label for="password">Password</label>
-		<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
-	</fieldset>
-	</form>
+        <p class="validateTips">All form fields are required.</p>
+        <form>
+        <fieldset>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
+        </fieldset>
+        </form>
     </div>
 
     <div id="dialog-login" title="Login Page">
+        <p class="validateTips">All form fields are required.</p>
         <form>
         <fieldset>
-        <label for="ID">ID:</label>
+        <label for="ID">Email:</label>
         <input type="text" name="ID" id="ID"  class="text ui-corner-all"/>
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" value="" class="text ui-corner-all" />
@@ -95,6 +97,11 @@ h1 { font-size: 1.2em; margin: .6em 0; }
 <div id="debug"></div>
 
 <script type="text/javascript">
+var socket;
+socket = io.connect('http://localhost',{port: 8000});
+
+
+          
 function run_client()
 {
     var gameScene;
@@ -290,18 +297,90 @@ function run_client()
 }
 
 $(function() {
-		$( "button", "#dialog-btn" ).button();
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+
+		function updateTips( tips,t ) {
+			tips
+				.text( t )
+				.addClass( "ui-state-highlight" );
+			setTimeout(function() {
+				tips.removeClass( "ui-state-highlight", 1500 );
+			}, 500 );
+		}
+
+		function checkLength(tips, o, n, min, max ) {
+			if ( o.val().length > max || o.val().length < min ) {
+				o.addClass( "ui-state-error" );
+				updateTips(tips, "Length of " + n + " must be between " +
+					min + " and " + max + "." );
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		function checkRegexp(tips,o, regexp, n ) {
+			if ( !( regexp.test( o.val() ) ) ) {
+				o.addClass( "ui-state-error" );
+				updateTips( tips,n );
+				return false;
+			} else {
+				return true;
+			}
+		}
+        
         $( "#dialog-form" ).dialog({
 			autoOpen: false,
-			height: 350,
+			height: 300,
 			width: 350,
             draggable: false,
             resizable: false,
 			modal: true,
 			buttons: {
-				"Create an account": function() {},
+				"Create an account": function() {
+                    var name = $( "#dialog-form #name" ),
+                    email = $( "#dialog-form #email" ),
+                    password = $( "#dialog-form #password" ),
+                    allFields = $( [] ).add( name ).add( email ).add( password ),
+                    tips = $( "#dialog-form .validateTips" );
+                    
+                    var bValid = true;
+                    allFields.removeClass( "ui-state-error" );
+
+                    bValid = bValid && checkLength( tips,name, "username", 3, 16 );
+                    bValid = bValid && checkLength( tips,email, "email", 6, 80 );
+                    bValid = bValid && checkLength( tips,password, "password", 5, 16 );
+
+                    bValid = bValid && checkRegexp( tips,name, /^[a-z]([0-9a-z_])+$/i, "Username may consist of a-z, 0-9, underscores, begin with a letter." );
+                    // From jquery.validate.js (by joern), contributed by Scott Gonzalez: http://projects.scottsplayground.com/email_address_validation/
+                    bValid = bValid && checkRegexp( tips,email, /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i, "eg. ui@jquery.com" );
+                    bValid = bValid && checkRegexp( tips,password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+
+                    if ( bValid ) {
+                        //$( "#users tbody" ).append( "<tr>" +
+                        //    "<td>" + name.val() + "</td>" + 
+                        //    "<td>" + email.val() + "</td>" + 
+                        //    "<td>" + password.val() + "</td>" +
+                        //"</tr>" ); 
+                        socket.emit('register', { name: name.val() ,email : email.val() ,password:password.val()});
+                        socket.on('register_response',function (data){
+                            if (data.result == 'OK' ) 
+                                    {alert('register success!');
+                                    $( "#dialog-form" ).dialog( "close" );}
+                            });
+                        
+                    }
+                },
                 "Cancel":function() {$( this ).dialog( "close" );}},
-            close: function() {}
+            close: function() {
+                    var name = $( "#dialog-form #name" ),
+                    email = $( "#dialog-form #email" ),
+                    password = $( "#dialog-form #password" ),
+                    allFields = $( [] ).add( name ).add( email ).add( password ),
+                    tips = $( "#dialog-form .validateTips" );
+                    allFields.val( "" ).removeClass( "ui-state-error" );
+                }
         });
         $( "#dialog-login" ).dialog({
             open: function(event, ui) { 
@@ -315,13 +394,36 @@ $(function() {
             width: 350,
             modal: true,
             buttons: {
-                "Login":function() {$("#dialog-login").dialog( "close" ); run_client();},
+                "Login":function() {
+                    var email = $( "#dialog-login #ID" ),
+                    password = $( "#dialog-login #password" ),
+                    allFields = $( [] ).add( email ).add( password ),
+                    tips = $( "#dialog-login .validateTips" );
+                    
+                    var bValid = true;
+                    allFields.removeClass( "ui-state-error" );
+
+                    bValid = bValid && checkLength( tips,email, "email", 6, 80 );
+                    bValid = bValid && checkLength( tips,password, "password", 5, 16 );
+
+                    // From jquery.validate.js (by joern), contributed by Scott Gonzalez: http://projects.scottsplayground.com/email_address_validation/
+                    bValid = bValid && checkRegexp( tips,email, /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i, "eg. ui@jquery.com" );
+                    bValid = bValid && checkRegexp( tips,password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+
+                    if ( bValid ) {
+                        socket.emit('login', { email : email.val() ,password:password.val()});
+                        socket.on('login_response',function (data){
+                            if (data.result == 'OK' ) {alert('login success!');
+                                    $("#dialog-login").dialog( "close" );
+                                    run_client();}
+                            });
+                        
+                    }
+                },
                 "Register":function() {$( "#dialog-form" ).dialog( "open" );}},
             close: function() {}
         });
         
-
-
 	});
 </script>
 
