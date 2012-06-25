@@ -234,11 +234,12 @@ function run_client()
                 var dirx=manvel[0]/dirtotal;
                 var diry=manvel[1]/dirtotal;
                 xdist=gameScene.ray([manpos[0],manpos[1],manpos[2]-6],[-dirx,-diry,0]);
-                xdist=((xdist.distance*100)|0)/100;
-                if(xdist<3 && xdist>0){
-                    manvel[0]=0;
-                    manvel[1]=0;
-                }
+                if(xdist != null){
+                    xdist=((xdist.distance*100)|0)/100;
+                    if(xdist<3 && xdist>0){
+                        manvel[0]=0;
+                        manvel[1]=0;
+                    }};
             }
             
             if(mantime>0){
