@@ -22,7 +22,7 @@ h1 { font-size: 1.2em; margin: .6em 0; }
 .validateTips { border: 1px solid transparent; padding: 0.3em; }
 .ui-dialog .ui-state-error { padding: .3em; }
 
-#container{ margin: 0 auto; width: 900px; padding: 10px; background-color: #eee; border-radius: 5px; -webkit-box-shadow: 5px 5px 2px #444; }
+#container{ margin: 0px auto; width: 80%;padding: 10px; background-color: #eee; border-radius: 5px; -webkit-box-shadow: 5px 5px 2px #444; }
 
 /* preloader */
 .glge-gui-gadget-preloader {
@@ -60,7 +60,9 @@ h1 { font-size: 1.2em; margin: .6em 0; }
 <body>
 
 <div id="container">
-	<canvas id="canvas" width="900" height="400" ></canvas>
+    <div id="canvas_container" style="text-align:center;">
+        <canvas id="canvas" width="900" height="400" ></canvas>
+    </div>
     
     <div id="dialog-form" title="Create new user">
         <p class="validateTips">All form fields are required.</p>
@@ -101,7 +103,20 @@ var socket;
 socket = io.connect('http://localhost',{port: 8000});
 
 
-          
+function setCanvas(canvas_name){
+
+   var canvasNode = document.getElementById(canvas_name);
+
+   var pw = canvasNode.parentNode.clientWidth;
+   var ph = canvasNode.parentNode.clientHeight;
+
+   canvasNode.height = pw * (canvasNode.height/canvasNode.width);  
+   canvasNode.width = pw ;
+   //canvasNode.style.top = (ph-canvasNode.height)/2 + "px";
+   //canvasNode.style.left = (pw-canvasNode.width)/2 + "px";
+}     
+setCanvas('canvas');
+        
 function run_client()
 {
     var gameScene;
