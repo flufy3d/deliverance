@@ -1,8 +1,7 @@
 var io = require('socket.io').listen(8000);
 
 io.sockets.on('connection', function (socket) {
-	console.log('connected');
-  socket.emit('news', { hello: 'world' });
+  console.log('connected');
   socket.on('register',function(data) {
     console.log(data);
     socket.emit('register_response',{result:'OK'});
