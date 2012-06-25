@@ -60,7 +60,7 @@ h1 { font-size: 1.2em; margin: .6em 0; }
 <body>
 
 <div id="container">
-	<canvas id="canvas" width="900" height="400"></canvas>
+	<canvas id="canvas" width="900" height="400" ></canvas>
     
     <div id="dialog-form" title="Create new user">
         <p class="validateTips">All form fields are required.</p>
@@ -382,6 +382,9 @@ $(function() {
                     allFields.val( "" ).removeClass( "ui-state-error" );
                 }
         });
+        
+        
+        
         $( "#dialog-login" ).dialog({
             open: function(event, ui) { 
             // Hide close button 
@@ -420,9 +423,11 @@ $(function() {
                         
                     }
                 },
-                "Register":function() {$( "#dialog-form" ).dialog( "open" );}},
+                "Register":function() {$( "#dialog-form" ).dialog( "open" ).parent()
+                    .position({ my: 'center', at: 'center', of: '#container' });}},
             close: function() {}
-        });
+        }).parent()
+        .position({ my: 'center', at: 'center', of: '#container' });
         
 	});
 </script>
