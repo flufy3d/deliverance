@@ -381,10 +381,13 @@ $(function() {
                         //"</tr>" ); 
                         socket.emit('register', { name: name.val() ,email : email.val() ,password:password.val()});
                         socket.on('register_response',function (data){
-                            if (data.result == 'OK' ) 
-                                    {alert('register success!');
-                                    $( "#dialog-form" ).dialog( "close" );}
-                            });
+                            if (data.result == 'OK' ) {
+                                    alert('register success!');
+                                    $( "#dialog-form" ).dialog( "close" );
+                            }
+                            else{
+                                    alert('register failed!');
+                            }});
                         
                     }
                 },
@@ -432,10 +435,13 @@ $(function() {
                     if ( bValid ) {
                         socket.emit('login', { email : email.val() ,password:password.val()});
                         socket.on('login_response',function (data){
-                            if (data.result == 'OK' ) {alert('login success!');
+                            if (data.result == 'OK' ) {
                                     $("#dialog-login").dialog( "close" );
-                                    run_client();}
-                            });
+                                    run_client();
+                            }
+                            else{
+                                alert('login failed');
+                            }});
                         
                     }
                 },
