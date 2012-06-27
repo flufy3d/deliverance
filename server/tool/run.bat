@@ -1,5 +1,8 @@
 cd ..
-start node main.js
+start "database" mongod.exe --dbpath data
+ping localhost -n 3
+start "server" node main.js
+ping localhost -n 1
 cd ..
 cd client
-start node app.js
+start "client" node app.js
