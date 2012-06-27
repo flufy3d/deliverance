@@ -1,7 +1,7 @@
 <html><head> 
  
  
-<title>GLGE</title> 
+<title>Deliverance</title> 
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
  
  
@@ -91,7 +91,7 @@ h1 { font-size: 1.2em; margin: .6em 0; }
     </div>
 
     <div id="details">
-		<h2>GLGE Platform Game</h2>
+		<h2>Use GLGE Platform</h2>
 		<p>A very basic platform game, controls:<br />Cursor keys to move and spacebar to jump</p>
 	</div>
 </div>
@@ -101,7 +101,23 @@ h1 { font-size: 1.2em; margin: .6em 0; }
 <script type="text/javascript">
 var socket;
 socket = io.connect('http://localhost',{port: 8000});
-
+socket.on('login_response',function (data){
+    if (data.result == 'OK' ) {
+            $("#dialog-login").dialog( "close" );
+            run_client();
+    }
+    else{
+        alert('login failed');
+}});
+    
+socket.on('register_response',function (data){
+    if (data.result == 'OK' ) {
+            alert('register success!');
+            $( "#dialog-form" ).dialog( "close" );
+    }
+    else{
+            alert('register failed!');
+}});
 
 function setCanvas(canvas_name){
 
@@ -380,15 +396,6 @@ $(function() {
                         //    "<td>" + password.val() + "</td>" +
                         //"</tr>" ); 
                         socket.emit('register', { name: name.val() ,email : email.val() ,password:password.val()});
-                        socket.on('register_response',function (data){
-                            if (data.result == 'OK' ) {
-                                    alert('register success!');
-                                    $( "#dialog-form" ).dialog( "close" );
-                            }
-                            else{
-                                    alert('register failed!');
-                            }});
-                        
                     }
                 },
                 "Cancel":function() {$( this ).dialog( "close" );}},
@@ -434,15 +441,6 @@ $(function() {
 
                     if ( bValid ) {
                         socket.emit('login', { email : email.val() ,password:password.val()});
-                        socket.on('login_response',function (data){
-                            if (data.result == 'OK' ) {
-                                    $("#dialog-login").dialog( "close" );
-                                    run_client();
-                            }
-                            else{
-                                alert('login failed');
-                            }});
-                        
                     }
                 },
                 "Register":function() {$( "#dialog-form" ).dialog( "open" ).parent()
