@@ -6,7 +6,7 @@ var db_connect_timeout = setTimeout(function() {
   //throw 'Failed to connect database!'
 }, 10000);
 
-mongoose.connect('mongodb://227.0.0.1/my_database');
+mongoose.connect('mongodb://127.0.0.1/my_database');
 console.log(mongoose.connection.host);
 console.log(mongoose.connection.port);
 
@@ -33,13 +33,15 @@ var BlogPost = new Schema({
         votes : Number
       , favs  : Number
     }
+  , count     : Number
 });
 
 var BlogPost = mongoose.model('BlogPost', BlogPost);
 
-
+/* push new one
 var post = new BlogPost();
-post.title='blahblah';
+post.title='asdf';
+post.count= 23;
 // create a comment
 post.comments.push({ title: 'My comment' });
 
@@ -51,12 +53,27 @@ post.save(function (err) {
       console.log('saved!');
   }
 });
+*/
+/* update one
+BlogPost.findOne({ title: 'asdf' }, function (err, doc){
+  doc.title = 'jason borne';
+  doc.count += 1;
+  doc.save();
+});
+*/
 
+/* delete one
+BlogPost.findOne({ count: 23 }, function (err, doc){
+  doc.remove();
+});
+*/
+
+/* Traverse all the results
 BlogPost.find({}, function (err, docs) {
   // docs.forEach
   docs.forEach(function(doc){console.log(doc)});
 });
-
+*/
 ///////////
 var io = require('socket.io').listen(8000);
 
