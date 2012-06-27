@@ -1,105 +1,62 @@
+var mongoose = require('mongoose'); 
+console.log('Started database connection, waiting for it to open');
 
-/**
- * Module dependencies.
- */
+var db_connect_timeout = setTimeout(function() {
+  console.log('Failed to connect database!');
+  //throw 'Failed to connect database!'
+}, 10000);
 
-var mongoose = require('mongoose')
-  , Schema = mongoose.Schema;
+mongoose.connect('mongodb://227.0.0.1/my_database');
+console.log(mongoose.connection.host);
+console.log(mongoose.connection.port);
 
-/**
- * Schema definition
- */
+ mongoose.connection.on('open', function() {
+                console.log('Opened connection');
+                clearTimeout(db_connect_timeout); 
+            });
+            
+var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
 
-// recursive embedded-document schema
-
-var Comment = new Schema();
-
-Comment.add({
-    title     : { type: String, index: true }
-  , date      : Date
+var Comments = new Schema({
+    title     : String
   , body      : String
-  , comments  : [Comment]
+  , date      : Date
 });
 
 var BlogPost = new Schema({
-    title     : { type: String, index: true }
-  , slug      : { type: String, lowercase: true, trim: true }
+    author    : ObjectId
+  , title     : String
+  , body      : String
   , date      : Date
-  , buf       : Buffer
-  , comments  : [Comment]
-  , creator   : Schema.ObjectId
-});
-
-var Person = new Schema({
-    name: {
-        first: String
-      , last : String
+  , comments  : [Comments]
+  , meta      : {
+        votes : Number
+      , favs  : Number
     }
-  , email: { type: String, required: true, index: { unique: true, sparse: true } }
-  , alive: Boolean
 });
 
-/**
- * Accessing a specific schema type by key
- */
+var BlogPost = mongoose.model('BlogPost', BlogPost);
 
-BlogPost.path('date')
-.default(function(){
-   return new Date()
- })
-.set(function(v){
-   return v == 'now' ? new Date() : v;
- });
 
-/**
- * Pre hook.
- */
+var post = new BlogPost();
+post.title='blahblah';
+// create a comment
+post.comments.push({ title: 'My comment' });
 
-BlogPost.pre('save', function(next, done){
-  emailAuthor(done); // some async function
-  next();
+post.save(function (err) {
+  if(err){
+      throw err;
+      console.log(err);
+  }else{
+      console.log('saved!');
+  }
 });
 
-/**
- * Methods
- */
+BlogPost.find({}, function (err, docs) {
+  // docs.forEach
+  docs.forEach(function(doc){console.log(doc)});
+});
 
-BlogPost.methods.findCreator = function (callback) {
-  return this.db.model('Person').findById(this.creator, callback);
-}
-
-BlogPost.statics.findByTitle = function (title, callback) {
-  return this.find({ title: title }, callback);
-}
-
-BlogPost.methods.expressiveQuery = function (creator, date, callback) {
-  return this.find('creator', creator).where('date').gte(date).run(callback);
-}
-
-/**
- * Plugins
- */
-
-function slugGenerator (options){
-  options = options || {};
-  var key = options.key || 'title';
-
-  return function slugGenerator(schema){
-    schema.path(key).set(function(v){
-      this.slug = v.toLowerCase().replace(/[^a-z0-9]/g, '').replace(/-+/g, '');
-      return v;
-    });
-  };
-};
-
-BlogPost.plugin(slugGenerator());
-
-/**
- * Define model.
- */
-
-mongoose.model('BlogPost', BlogPost);
-mongoose.model('Person', Person);
 ///////////
 var io = require('socket.io').listen(8000);
 
