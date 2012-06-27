@@ -99,8 +99,16 @@ h1 { font-size: 1.2em; margin: .6em 0; }
 <div id="debug"></div>
 
 <script type="text/javascript">
+////Config Variable
+//var server_ip = 'http://localhost';
+//var server_port = 8000;
+var server_ip = 'http://server.jit.su/';
+var server_port = 80;
+////////////////////////////////////////
+
+
 var socket;
-socket = io.connect('http://localhost',{port: 8000});
+socket = io.connect(server_ip,{port: server_port});
 socket.on('login_response',function (data){
     if (data.result == 'OK' ) {
             $("#dialog-login").dialog( "close" );
