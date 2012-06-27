@@ -2,7 +2,7 @@
  
  
 <title>Deliverance</title> 
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
  
  
 <link type="text/css" href="dependencies/jquery-ui-1.8.21.custom.css" rel="stylesheet" />	
@@ -78,9 +78,9 @@ h1 { font-size: 1.2em; margin: .6em 0; }
         </form>
     </div>
 
-    <div id="dialog-login" title="Login Page">
+    <div id="dialog-login" title="Login Page" method="POST" action="">
         <p class="validateTips">All form fields are required.</p>
-        <form>
+        <form id="login_form">
         <fieldset>
         <label for="ID">Email:</label>
         <input type="text" name="ID" id="ID"  class="text ui-corner-all"/>
@@ -100,10 +100,10 @@ h1 { font-size: 1.2em; margin: .6em 0; }
 
 <script type="text/javascript">
 ////Config Variable
-//var server_ip = 'http://localhost';
-//var server_port = 8000;
-var server_ip = 'http://server.jit.su/';
-var server_port = 80;
+var server_ip = 'http://localhost';
+var server_port = 8000;
+//var server_ip = 'http://server.jit.su/';
+//var server_port = 80;
 ////////////////////////////////////////
 
 
