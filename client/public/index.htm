@@ -105,14 +105,16 @@ var server_port = 8000;
 //var server_ip = 'http://server.jit.su/';
 //var server_port = 80;
 ////////////////////////////////////////
-
+var already_login = false;
 
 var socket;
 socket = io.connect(server_ip,{port: server_port});
 socket.on('login_response',function (data){
     if (data.result == 'OK' ) {
             $("#dialog-login").dialog( "close" );
-            run_client();
+            if(!already_login){
+                run_client();}
+            already_login = true;
     }
     else{
         alert('login failed');
