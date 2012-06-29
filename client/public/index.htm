@@ -180,6 +180,13 @@ function run_client()
             var time=(new Date()).getTime();
             var dt=(time-mantime)/1000;
             
+            //$("#debug").append(dt + '<br/>');
+            //$("#debug").html(dt + '<br/>');
+            if (dt > 1){
+                mantime=(new Date()).getTime();
+                return;
+            }
+            
             var camera=gameScene.camera;
             var position=camera.getPosition();
             
