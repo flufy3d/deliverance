@@ -1,4 +1,4 @@
-////Config Variable
+﻿////Config Variable
 var server_ip = 'http://localhost';
 var server_port = 8000;
 //var server_ip = 'http://server.jit.su/';
@@ -72,6 +72,14 @@ function run_client()
         var manfly=doc.getElement("ACArmature_Fly");
         var char_title=doc.getElement("char_title");
         var mantime=0;
+        var char_title2 = new GLGE.Text();
+        char_title2.setId("char_title2");
+        char_title2.setText("法克啊！");
+        char_title2.setSize(100);
+        char_title2.setFont("times");
+        char_title2.setColor("red");
+        char_title2.setLookat(gameScene.camera);
+        gameScene.addChild(char_title2);
 
         function manlogic(){
             var matrix=armatue.getModelMatrix();
@@ -187,6 +195,10 @@ function run_client()
                 char_title.setLocX(manpos[0]);
                 char_title.setLocY(manpos[1]);
                 char_title.setLocZ(manpos[2]+10);
+                char_title2.setLocX(manpos[0]);
+                char_title2.setLocY(manpos[1]);
+                char_title2.setLocZ(manpos[2]+13);
+                
                 $("#debug").html("pos:x: " + manpos[0]+"y: "+manpos[1]+"z: "+manpos[2]);
                 
                 armatue.setRotZ(manrot);
