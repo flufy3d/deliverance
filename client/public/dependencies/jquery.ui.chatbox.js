@@ -98,6 +98,7 @@
             title = options.title || "No Title",
             // chatbox
             uiChatbox = (self.uiChatbox = $('<div></div>'))
+            .draggable()
             .appendTo(document.body)
             .addClass('ui-widget ' + 
                 'ui-corner-top ' + 
