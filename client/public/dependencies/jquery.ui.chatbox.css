@@ -1,0 +1,64 @@
+/* style sheets */
+    
+.ui-chatbox {
+    position: fixed;
+    bottom:0;
+    padding: 2px 2px 2px 2px;
+    padding: 2px 2px 2px 2px;
+    background:  #CCCCCC;
+    opacity: 0.8;
+    /* background:  #CCCCCC; */
+}
+
+.ui-chatbox-titlebar {
+    padding: 3px 3px 3px 3px;
+    height: 20px;
+}
+
+.ui-chatbox-content {
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    border: 0px;
+}
+
+.ui-chatbox-log {
+    padding: 3px 3px 3px 3px;
+    height: 150px;
+    overflow-y: auto;
+    background: #000000;
+    scrollbar-arrow-color: #ffffff; /*图6,三角箭头的颜色*/
+    scrollbar-face-color: #333; /*图5,立体滚动条的颜色*/
+    scrollbar-3dlight-color: #666; /*图1,立体滚动条亮边的颜色*/
+    scrollbar-highlight-color: #666; /*图2,滚动条空白部分的颜色*/
+    scrollbar-shadow-color: #999; /*图3,立体滚动条阴影的颜色*/
+    scrollbar-darkshadow-color: #666; /*图4,立体滚动条强阴影的颜色*/
+    scrollbar-track-color: #666; /*图7,立体滚动条背景颜色*/
+    scrollbar-base-color:#f8f8f8; /*滚动条的基本颜色*/
+}
+
+.ui-chatbox-input {
+    padding: 3px 3px 3px 3px;
+    border-top: 1px solid grey;
+    overflow: hidden;
+    /* background: #000000; */
+}
+
+.ui-chatbox-input-box {
+    margin: 5px 5px 5px 5px;
+    border: 2px solid lightgrey;/* #6699FF */
+    /* padding:5px 5px 5px 5px; */
+    height: 35px;
+}
+
+.ui-chatbox-icon {
+    float: right;
+}
+
+.ui-chatbox-input-focus {
+    border-color: #6699FF;
+}
+
+.ui-chatbox-msg {
+    float: left;
+    clear: both;
+}
