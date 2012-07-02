@@ -22,6 +22,7 @@
             hidden: false,
             offset: 0, // relative to right edge of the browser window
             width: 230, // width of the chatbox
+            height: 150,// height of the chatbox
             messageSent: function(id, user, msg){
                 // override this
                 this.boxManager.addMsg(user.first_name, msg);
@@ -229,6 +230,7 @@
             });
 
             self._setWidth(self.options.width);
+            self._setHeight(self.options.height);
             self._position(self.options.offset);
 
             self.options.boxManager.init(self);
@@ -256,6 +258,9 @@
                     case "width":
                         this._setWidth(value);
                         break;
+                    case "height":
+                        this._setHeight(value);
+                        break;
                 }
             }
 
@@ -266,7 +271,12 @@
             this.uiChatboxTitlebar.width(width + "px");
             this.uiChatboxLog.width(width + "px");
             // this is a hack, but i can live with it so far
-            this.uiChatboxInputBox.css("width", (width - 14) + "px");
+            //this.uiChatboxInputBox.css("width", (width - 14) + "px");
+            this.uiChatboxInputBox.width(width -14 + "px");
+            this.uiChatbox.width(width + 8 + "px");
+        },
+        _setHeight: function(height) {
+            this.uiChatboxLog.height(height + "px");
         },
 
         _position: function(offset) {
