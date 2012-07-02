@@ -97,14 +97,14 @@
             options = self.options,
             title = options.title || "No Title",
             // chatbox
-            uiChatbox = (self.uiChatbox = $('<div></div>'))
-            .draggable()
+            uiChatbox = (self.uiChatbox = $('<div></div>'))            
             .appendTo(document.body)
             .addClass('ui-widget ' + 
                 'ui-corner-top ' + 
                 'ui-chatbox'
             )
             .attr('outline', 0)
+            .draggable()
             .focusin(function(){
                 // ui-state-highlight is not really helpful here
                 //self.uiChatbox.removeClass('ui-state-highlight');
