@@ -1,8 +1,8 @@
 ////Config Variable
-//var sil_port = 8000;
-//var database_url = 'mongodb://127.0.0.1/deldb';
 var sil_port = 8000;
-var database_url = 'mongodb://nodejitsu:c0e78e5b3ab649484028fb71a44ff623@staff.mongohq.com:10046/nodejitsudb831935829387';
+var database_url = 'mongodb://127.0.0.1/deldb';
+//var sil_port = 8000;
+//var database_url = 'mongodb://nodejitsu:c0e78e5b3ab649484028fb71a44ff623@staff.mongohq.com:10046/nodejitsudb831935829387';
 
 ///////////////////////////////////////////////////////
 //// init database components
