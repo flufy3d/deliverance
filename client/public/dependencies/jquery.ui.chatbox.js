@@ -282,7 +282,7 @@
         },
 
         _position: function(offset) {
-            this.uiChatbox.css("right", offset);
+            //this.uiChatbox.css("right", offset);
         }
     });
 }(jQuery));
