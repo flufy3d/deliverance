@@ -281,6 +281,8 @@ $(function() {
         //box.chatbox("widget").css("left",0 + "px");
         //box.chatbox("widget").css("top",0 + "px");
         //box.chatbox("option", "boxManager").toggleBox();
+        box.chatbox("widget").draggable({ containment: "#container", scroll: false });
+        box.chatbox("widget").position({ my: 'center', at: 'center', of: '#container' });
 
 
 		function updateTips( tips,t ) {
