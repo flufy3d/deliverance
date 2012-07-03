@@ -16,7 +16,7 @@
                   box.chatbox("option", "boxManager").toggleBox();
               }
               else {
-                  box = $("#chat_div").chatbox({id:"chat_div", 
+                  box = $("<div id=\"chat_div\"></div>").chatbox({id:"chat_div", 
                                                 user:{key : "value"},
                                                 title : "test chat",
                                                 width : 600,
@@ -40,8 +40,7 @@
     properly loaded, check out the code.</p>  <input type="button"
     name="toggle" value="toggle" />
 
-    <div id="chat_div">
-    </div>
+
 
     <hr />
     <div id="log">
