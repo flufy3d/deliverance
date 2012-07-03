@@ -6,12 +6,15 @@ var server_port = 8000;
 ////////////////////////////////////////
 var already_login = false;
 
+var user_name;
 var socket;
 socket = io.connect(server_ip,{port: server_port});
 socket.on('login_response',function (data){
     if (data.result == 'OK' ) {
             $("#dialog-login").dialog( "close" );
             if(!already_login){
+                user_name = data.name;
+                $("#chat_div").chatbox("option", "id",user_name);
                 run_client();
                 }
             already_login = true;
@@ -71,16 +74,16 @@ function run_client()
         var manstand=doc.getElement("ACArmature_stand");
         var manland=doc.getElement("ACArmature_Land");
         var manfly=doc.getElement("ACArmature_Fly");
-        var char_title=doc.getElement("char_title");
         var mantime=0;
-        var char_title2 = new GLGE.Text();
-        char_title2.setId("char_title2");
-        char_title2.setText("法克啊！");
-        char_title2.setSize(100);
-        char_title2.setFont("times");
-        char_title2.setColor("red");
-        char_title2.setLookat(gameScene.camera);
-        gameScene.addChild(char_title2);
+        var char_title = new GLGE.Text();
+        char_title.setId("char_title");
+        char_title.setText(user_name);
+        char_title.setSize(100);
+        char_title.setFont("times");
+        char_title.setColor("171a1c");
+        char_title.setAlpha(0.8);
+        char_title.setLookat(gameScene.camera);
+        gameScene.addChild(char_title);
 
         function manlogic(){
             var matrix=armatue.getModelMatrix();
@@ -196,9 +199,6 @@ function run_client()
                 char_title.setLocX(manpos[0]);
                 char_title.setLocY(manpos[1]);
                 char_title.setLocZ(manpos[2]+10);
-                char_title2.setLocX(manpos[0]);
-                char_title2.setLocY(manpos[1]);
-                char_title2.setLocZ(manpos[2]+13);
                 
                 $("#debug").html("pos:x: " + manpos[0]+"y: "+manpos[1]+"z: "+manpos[2]);
                 

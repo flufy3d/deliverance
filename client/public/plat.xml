@@ -4370,7 +4370,6 @@
 <light id="LALamp"  color="#fffdc1" type="L_DIR" distance="500"  buffer_height="2048" buffer_width="512" cascade_levels="4" cast_shadows="TRUE"  />
 		
 <camera id="CAMCamera" rot_order="ROT_XZY" loc_x="2.399786" loc_y="-6.149313" loc_z="13.309001" rot_x="1.109319" rot_y="0.010817" rot_z="0.814928" />
-<text id="char_title" loc_z="8" loc_y="-10" loc_x="-3" text="I'm a mon'kay" size="100" font="times" color="red" rot_x="1.56" lookat="#CAMCamera"/>
 
 </scene>
 </glge>

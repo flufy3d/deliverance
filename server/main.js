@@ -71,7 +71,7 @@ io.sockets.on('connection', function (socket) {
     console.log('user login request.');
     User.findOne({ email: data.email,password: data.password }, function (err, doc){
         if (doc != null){
-            socket.emit('login_response',{result:'OK'});
+            socket.emit('login_response',{result:'OK',name:doc.name});
         }
         else{
             socket.emit('login_response',{result:err});
