@@ -12,7 +12,8 @@ socket.on('login_response',function (data){
     if (data.result == 'OK' ) {
             $("#dialog-login").dialog( "close" );
             if(!already_login){
-                run_client();}
+                run_client();
+                }
             already_login = true;
     }
     else{
@@ -245,6 +246,7 @@ function run_client()
             requestAnimationFrame(render);
         }
         render();
+        $("#chat_div").chatbox("option", "boxManager").toggleBox();
     }
     // Preloader configurations are optional. They improve the accuracy of the preloader.
     var preloaderConfiguration1 = {XMLQuota: 0.13, numXMLFiles: 1}; // Example 1 (active)
@@ -263,8 +265,23 @@ function run_client()
 }
 
 $(function() {
-		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
-		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+
+        //chatbox
+        var box = $("#chat_div").chatbox({id:"chat_div", 
+                                    user:{key : "value"},
+                                    title : "chat dailog",
+                                    width : 600,
+                                    height: 150,
+                                    hidden: true,
+                                    messageSent : function(id, user, msg) {
+                                        $("#log").append(id + " said: " + msg + "<br/>");
+                                        //$("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+                                        this.boxManager.addMsg(id, msg);
+                                    }});
+        //box.chatbox("widget").css("left",0 + "px");
+        //box.chatbox("widget").css("top",0 + "px");
+        //box.chatbox("option", "boxManager").toggleBox();
+
 
 		function updateTips( tips,t ) {
 			tips

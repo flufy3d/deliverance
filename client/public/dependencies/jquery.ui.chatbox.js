@@ -238,6 +238,9 @@
             if (!self.options.hidden) {
                 uiChatbox.show();
             }
+            else{
+                uiChatbox.hide();
+            }
         },
 
         _setOption: function(option, value) {
