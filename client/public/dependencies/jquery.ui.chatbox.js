@@ -105,7 +105,6 @@
                 'ui-chatbox'
             )
             .attr('outline', 0)
-            .draggable()
             .focusin(function(){
                 // ui-state-highlight is not really helpful here
                 //self.uiChatbox.removeClass('ui-state-highlight');
