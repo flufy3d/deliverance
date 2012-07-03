@@ -30,7 +30,15 @@ socket.on('register_response',function (data){
     }
     else{
             alert('register failed!');
-}});
+    }
+});
+
+socket.on('broadcast_chat_msg',function (data){
+    if(already_login){
+        $("#chat_div").chatbox("option", "boxManager").addMsg(data.name, data.value);
+    }
+});
+
 
 function setCanvas(canvas_name){
 
@@ -274,9 +282,10 @@ $(function() {
                                     height: 150,
                                     hidden: true,
                                     messageSent : function(id, user, msg) {
-                                        $("#log").append(id + " said: " + msg + "<br/>");
+                                        //$("#log").append(id + " said: " + msg + "<br/>");
                                         //$("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
                                         this.boxManager.addMsg(id, msg);
+                                        socket.emit('send_chat_msg', { value: msg});
                                     }});
         //box.chatbox("widget").css("left",0 + "px");
         //box.chatbox("widget").css("top",0 + "px");

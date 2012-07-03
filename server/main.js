@@ -45,8 +45,10 @@ var User = mongoose.model('User', User);
 var io = require('socket.io').listen(sil_port);
 
 io.sockets.on('connection', function (socket) {
-   var address = socket.handshake.address;
-   console.log("New connection from " + address.address + ":" + address.port);
+  var address = socket.handshake.address;
+  var username = null;
+  var _id = null;
+  console.log("New connection from " + address.address + ":" + address.port);
    
   socket.on('register',function(data) {
     console.log(data);
@@ -71,12 +73,17 @@ io.sockets.on('connection', function (socket) {
     console.log('user login request.');
     User.findOne({ email: data.email,password: data.password }, function (err, doc){
         if (doc != null){
+            username = doc.name;
+            _id = doc._id
             socket.emit('login_response',{result:'OK',name:doc.name});
         }
         else{
             socket.emit('login_response',{result:err});
         }
-    });
-    
+    });    
   });
+  socket.on('send_chat_msg', function (data) {
+     socket.broadcast.emit('broadcast_chat_msg',{name:username,value:data.value});
+  });
+  
 });
