@@ -1,8 +1,8 @@
 ﻿////Config Variable
-var server_ip = 'http://localhost';
-var server_port = 8000;
-//var server_ip = 'http://server.jit.su/';
-//var server_port = 80;
+//var server_ip = 'http://localhost';
+//var server_port = 8000;
+var server_ip = 'http://server.jit.su/';
+var server_port = 80;
 ////////////////////////////////////////
 var already_login = false;
 
