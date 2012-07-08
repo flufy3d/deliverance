@@ -201,6 +201,7 @@
             )
             .appendTo(uiChatboxInput)
             .keydown(function(event) {
+                event.stopPropagation();
                 if(event.keyCode && event.keyCode == $.ui.keyCode.ENTER) {
                     msg = $.trim($(this).val());
                     if(msg.length > 0) {
